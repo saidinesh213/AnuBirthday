@@ -6,13 +6,16 @@
     <title>Happy Birthday</title>
     <style>
         body {
-            background-color: #f9f9f9;
+            background-image: url('https://i.imgur.com/O8mry8G.jpg'); /* Use a cool birthday theme image */
+            background-size: cover;
+            background-position: center;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            flex-direction: column;
             overflow: hidden;
+            flex-direction: column;
+            margin: 0;
         }
         #balloons {
             position: relative;
@@ -26,12 +29,21 @@
             height: 130px;
             background-color: #ff5f5f;
             border-radius: 50% 50% 60% 60%;
-            cursor: pointer;
+            cursor: crosshair; /* Cursor set to a sharp pin-like crosshair */
             transition: transform 0.3s ease;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         }
         .balloon:hover {
             transform: scale(1.1);
+        }
+        .thread {
+            position: absolute;
+            width: 2px;
+            height: 70px;
+            background-color: #555;
+            top: 130px;
+            left: 50%;
+            transform: translateX(-50%);
         }
         .hidden-message {
             display: none;
@@ -39,15 +51,41 @@
             font-size: 2rem;
             color: #333;
             margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 8px;
         }
         #image {
             display: none;
             margin-top: 20px;
+            border-radius: 10px;
         }
         h1 {
             display: none;
             font-size: 3rem;
             color: #e74c3c;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 8px;
+        }
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+        @keyframes moveHorizontally {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(100vw);
+            }
         }
     </style>
 </head>
@@ -63,13 +101,24 @@
         const balloonContainer = document.getElementById('balloons');
         
         for (let i = 0; i < numBalloons; i++) {
+            const balloonWrapper = document.createElement('div');
+            balloonWrapper.style.position = 'absolute';
+            balloonWrapper.style.top = `${Math.random() * 100}vh`;
+            balloonWrapper.style.left = `${Math.random() * 100}vw`;
+            balloonWrapper.style.animation = `float ${Math.random() * 5 + 5}s ease-in-out infinite, moveHorizontally ${Math.random() * 10 + 10}s linear infinite`;
+            balloonWrapper.style.zIndex = '1';
+
             const balloon = document.createElement('div');
             balloon.classList.add('balloon');
             balloon.style.backgroundColor = getRandomColor();
-            balloon.style.top = `${Math.random() * 80}vh`;
-            balloon.style.left = `${Math.random() * 80}vw`;
             balloon.addEventListener('click', popBalloon);
-            balloonContainer.appendChild(balloon);
+
+            const thread = document.createElement('div');
+            thread.classList.add('thread');
+
+            balloonWrapper.appendChild(balloon);
+            balloonWrapper.appendChild(thread);
+            balloonContainer.appendChild(balloonWrapper);
         }
 
         // Random color generator
@@ -80,7 +129,7 @@
 
         // Balloon pop effect
         function popBalloon(e) {
-            e.target.style.display = 'none';
+            e.target.parentElement.style.display = 'none';
             checkAllBalloonsPopped();
         }
 
