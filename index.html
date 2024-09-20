@@ -87,6 +87,24 @@
                 transform: translateY(0);
             }
         }
+
+        @keyframes popEffect {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.5);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(0);
+                opacity: 0;
+            }
+        }
+
+        .pop {
+            animation: popEffect 0.3s forwards;
+        }
     </style>
 </head>
 <body>
@@ -95,10 +113,16 @@
     <div class="hidden-message">Wishing you a day filled with love and happiness. You are the light of my life, and I cherish every moment with you.</div>
     <img id="image" src="bucki.jfif" alt="Wife's Picture" width="300px">
 
+    <!-- Sound for balloon pop -->
+    <audio id="popSound">
+        <source src="https://www.soundjay.com/button/sounds/button-16.mp3" type="audio/mpeg">
+    </audio>
+
     <script>
         const numBalloons = 20;
         const balloonContainer = document.getElementById('balloons');
         const balloons = [];
+        const popSound = document.getElementById('popSound');
 
         // Balloon creation
         for (let i = 0; i < numBalloons; i++) {
@@ -133,10 +157,15 @@
             return colors[Math.floor(Math.random() * colors.length)];
         }
 
-        // Balloon pop effect
+        // Balloon pop effect with sound
         function popBalloon(e) {
-            e.target.parentElement.style.display = 'none';
-            checkAllBalloonsPopped();
+            const balloon = e.target;
+            balloon.classList.add('pop'); // Add pop animation
+            popSound.play(); // Play pop sound
+            setTimeout(() => {
+                balloon.parentElement.style.display = 'none'; // Remove balloon after animation
+                checkAllBalloonsPopped();
+            }, 300);
         }
 
         // Check if all balloons are popped
