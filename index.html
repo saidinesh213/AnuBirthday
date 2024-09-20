@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday</title>
+    <style>
+        body {
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        #balloons {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .balloon {
+            position: absolute;
+            width: 100px;
+            height: 130px;
+            background-color: #ff5f5f;
+            border-radius: 50% 50% 60% 60%;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .balloon:hover {
+            transform: scale(1.1);
+        }
+        .hidden-message {
+            display: none;
+            text-align: center;
+            font-size: 2rem;
+            color: #333;
+            margin-top: 20px;
+        }
+        #image {
+            display: none;
+            margin-top: 20px;
+        }
+        h1 {
+            display: none;
+            font-size: 3rem;
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <div id="balloons"></div>
+    <h1 id="message">Happy Birthday, My Love!</h1>
+    <div class="hidden-message">Wishing you a day filled with love and happiness. You are the light of my life, and I cherish every moment with you.</div>
+    <img id="image" src="bucki.jfif" alt="Wife's Picture" width="300px">
+
+    <script>
+        // Balloon creation
+        const numBalloons = 20;
+        const balloonContainer = document.getElementById('balloons');
+        
+        for (let i = 0; i < numBalloons; i++) {
+            const balloon = document.createElement('div');
+            balloon.classList.add('balloon');
+            balloon.style.backgroundColor = getRandomColor();
+            balloon.style.top = `${Math.random() * 80}vh`;
+            balloon.style.left = `${Math.random() * 80}vw`;
+            balloon.addEventListener('click', popBalloon);
+            balloonContainer.appendChild(balloon);
+        }
+
+        // Random color generator
+        function getRandomColor() {
+            const colors = ['#ff7675', '#74b9ff', '#fd79a8', '#fdcb6e', '#55efc4', '#fab1a0', '#ffeaa7'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        // Balloon pop effect
+        function popBalloon(e) {
+            e.target.style.display = 'none';
+            checkAllBalloonsPopped();
+        }
+
+        // Check if all balloons are popped
+        function checkAllBalloonsPopped() {
+            const remainingBalloons = document.querySelectorAll('.balloon:not([style*="display: none"])');
+            if (remainingBalloons.length === 0) {
+                document.getElementById('message').style.display = 'block';
+                document.querySelector('.hidden-message').style.display = 'block';
+                document.getElementById('image').style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
