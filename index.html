@@ -17,12 +17,14 @@
             flex-direction: column;
             margin: 0;
         }
+
         #balloons {
             position: relative;
             width: 100vw;
             height: 100vh;
             overflow: hidden;
         }
+
         .balloon {
             position: absolute;
             width: 100px;
@@ -33,9 +35,11 @@
             transition: transform 0.3s ease;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         }
+
         .balloon:hover {
             transform: scale(1.1);
         }
+
         .thread {
             position: absolute;
             width: 2px;
@@ -45,6 +49,7 @@
             left: 50%;
             transform: translateX(-50%);
         }
+
         .hidden-message {
             display: none;
             text-align: center;
@@ -55,11 +60,13 @@
             padding: 10px;
             border-radius: 8px;
         }
+
         #image {
             display: none;
             margin-top: 20px;
             border-radius: 10px;
         }
+
         h1 {
             display: none;
             font-size: 3rem;
@@ -68,6 +75,7 @@
             padding: 10px;
             border-radius: 8px;
         }
+
         @keyframes float {
             0% {
                 transform: translateY(0);
@@ -79,14 +87,6 @@
                 transform: translateY(0);
             }
         }
-        @keyframes moveHorizontally {
-            0% {
-                transform: translateX(0);
-            }
-            100% {
-                transform: translateX(100vw);
-            }
-        }
     </style>
 </head>
 <body>
@@ -96,17 +96,16 @@
     <img id="image" src="bucki.jfif" alt="Wife's Picture" width="300px">
 
     <script>
-        // Balloon creation
         const numBalloons = 20;
         const balloonContainer = document.getElementById('balloons');
-        
+        const balloons = [];
+
+        // Balloon creation
         for (let i = 0; i < numBalloons; i++) {
             const balloonWrapper = document.createElement('div');
             balloonWrapper.style.position = 'absolute';
-            balloonWrapper.style.top = `${Math.random() * 100}vh`;
-            balloonWrapper.style.left = `${Math.random() * 100}vw`;
-            balloonWrapper.style.animation = `float ${Math.random() * 5 + 5}s ease-in-out infinite, moveHorizontally ${Math.random() * 10 + 10}s linear infinite`;
-            balloonWrapper.style.zIndex = '1';
+            balloonWrapper.style.top = `${Math.random() * 80}vh`;
+            balloonWrapper.style.left = `${Math.random() * 80}vw`;
 
             const balloon = document.createElement('div');
             balloon.classList.add('balloon');
@@ -119,6 +118,13 @@
             balloonWrapper.appendChild(balloon);
             balloonWrapper.appendChild(thread);
             balloonContainer.appendChild(balloonWrapper);
+
+            // Store balloon with random speed and direction
+            balloons.push({
+                element: balloonWrapper,
+                speedX: (Math.random() * 2 + 1) * (Math.random() > 0.5 ? 1 : -1),
+                speedY: (Math.random() * 2 + 1) * (Math.random() > 0.5 ? 1 : -1)
+            });
         }
 
         // Random color generator
@@ -142,6 +148,30 @@
                 document.getElementById('image').style.display = 'block';
             }
         }
+
+        // Balloon bouncing effect
+        function animateBalloons() {
+            balloons.forEach(balloon => {
+                const rect = balloon.element.getBoundingClientRect();
+                let newX = rect.left + balloon.speedX;
+                let newY = rect.top + balloon.speedY;
+
+                // Bounce off the edges of the screen
+                if (newX <= 0 || newX + rect.width >= window.innerWidth) {
+                    balloon.speedX *= -1;
+                }
+                if (newY <= 0 || newY + rect.height >= window.innerHeight) {
+                    balloon.speedY *= -1;
+                }
+
+                balloon.element.style.left = `${newX}px`;
+                balloon.element.style.top = `${newY}px`;
+            });
+
+            requestAnimationFrame(animateBalloons);
+        }
+
+        animateBalloons(); // Start the balloon animation
     </script>
 </body>
 </html>
