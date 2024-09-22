@@ -126,8 +126,12 @@
             balloonWrapper.appendChild(balloon);
             balloonContainer.appendChild(balloonWrapper);
 
-            // Store balloon in array for sequential popping
-            balloons.push(balloonWrapper);
+            // Store balloon with random speed and direction for bouncing effect
+            balloons.push({
+                element: balloonWrapper,
+                speedX: (Math.random() * 2 + 1) * (Math.random() > 0.5 ? 1 : -1),
+                speedY: (Math.random() * 2 + 1) * (Math.random() > 0.5 ? 1 : -1)
+            });
         }
 
         // Random color generator
@@ -139,7 +143,7 @@
         // Balloon pop effect with sound
         function popBalloon(e) {
             if (!popped) {
-                popped = true; // Ensure only one balloon triggers the chain
+                popped = true; // Ensure only one balloon click triggers the chain
                 const balloon = e.target;
                 balloon.classList.add('pop'); // Add pop animation
                 popSound.play(); // Play pop sound
@@ -160,18 +164,43 @@
             let delay = 0;
 
             balloons.forEach((balloon, index) => {
-                if (balloon && balloon.style.display !== 'none') {
+                if (balloon && balloon.element.style.display !== 'none') {
                     setTimeout(() => {
-                        balloon.firstChild.classList.add('pop'); // Add pop animation
+                        balloon.element.firstChild.classList.add('pop'); // Add pop animation
                         popSound.currentTime = 0;
                         popSound.play(); // Play pop sound
-                        setTimeout(() => balloon.style.display = 'none', 300);
+                        setTimeout(() => balloon.element.style.display = 'none', 300);
                     }, delay);
 
                     delay += 300; // Increase delay for the next balloon
                 }
             });
         }
+
+        // Balloon bouncing effect
+        function animateBalloons() {
+            balloons.forEach(balloon => {
+                const rect = balloon.element.getBoundingClientRect();
+                let newX = rect.left + balloon.speedX;
+                let newY = rect.top + balloon.speedY;
+
+                // Bounce off the edges of the screen
+                if (newX <= 0 || newX + rect.width >= window.innerWidth) {
+                    balloon.speedX *= -1;
+                }
+                if (newY <= 0 || newY + rect.height >= window.innerHeight) {
+                    balloon.speedY *= -1;
+                }
+
+                balloon.element.style.left = `${newX}px`;
+                balloon.element.style.top = `${newY}px`;
+            });
+
+            requestAnimationFrame(animateBalloons);
+        }
+
+        // Start the balloon animation
+        animateBalloons();
 
         // Check if all balloons are popped
         function checkAllBalloonsPopped() {
