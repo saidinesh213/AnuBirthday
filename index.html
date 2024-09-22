@@ -161,10 +161,12 @@
             balloon.classList.add('pop'); // Add pop animation
             popSound.play(); // Play pop sound
             balloon.style.animation = 'pop 0.3s forwards';
-            setTimeout(() => balloon.remove(), 300);
+           
+            //setTimeout(() => balloon.remove(), 300);
 
             // Start sequential popping of remaining balloons
             setTimeout(popRemainingBalloons, 300);
+            
             setTimeout(() => {
                 balloon.parentElement.style.display = 'none'; // Remove balloon after animation
                 checkAllBalloonsPopped();
@@ -191,9 +193,9 @@
         }
 
         // Create balloons on page load
-        for (let i = 0; i < numBalloons; i++) {
-            createBalloon();
-        }
+     //   for (let i = 0; i < numBalloons; i++) {
+       //     createBalloon();
+        //}
 
         // Check if all balloons are popped
         function checkAllBalloonsPopped() {
