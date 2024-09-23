@@ -26,9 +26,9 @@
             position: absolute;
             width: 250px;
             height: 280px;
-            background-image: url('—Pngtree—red love balloon_4447810.png'); /* Using the uploaded balloon image */
+            background-image: url('—Pngtree—red love balloon_4447810.png');
             background-size: cover;
-            cursor: url('https://cdn-icons-png.flaticon.com/512/7180/7180509.png'), auto; /* Sharp pin-like cursor */
+            cursor: url('https://cdn-icons-png.flaticon.com/512/7180/7180509.png'), auto;
             transition: transform 0.3s ease;
         }
 
@@ -45,7 +45,7 @@
             padding: 10px;
             border-radius: 8px;
             margin-top: 20px;
-            width: 70%; /* Adjust width for message box */
+            width: 70%;
         }
 
         #image {
@@ -61,18 +61,6 @@
             background-color: rgba(255, 255, 255, 0.8);
             padding: 10px;
             border-radius: 8px;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-20px);
-            }
-            100% {
-                transform: translateY(0);
-            }
         }
 
         @keyframes popEffect {
@@ -110,7 +98,6 @@
         const balloonContainer = document.getElementById('balloons');
         const balloons = [];
         const popSound = document.getElementById('popSound');
-        let popped = false; // To check if a balloon has been popped
         let numBalloonsPopped = 0;
 
         // Balloon creation
@@ -144,21 +131,16 @@
 
         // Balloon pop effect with sound
         function popBalloon(e) {
-            if (!popped) {
-                popped = true; // Ensure only one balloon click triggers the chain
-                const balloon = e.target;
-                balloon.classList.add('pop'); // Add pop animation
-                popSound.play(); // Play pop sound
-//balloon.classList.add('popped');
-                // Sequentially pop remaining balloons
-                setTimeout(() => popRemainingBalloons(), 300);
+            const balloon = e.target;
+            balloon.classList.add('pop'); // Add pop animation
+            popSound.play(); // Play pop sound
 
-                // Check if all balloons are popped
-                setTimeout(() => {
-                    balloon.parentElement.style.display = 'none';
-                    checkAllBalloonsPopped();
-                }, 300);
-            }
+            // Remove the balloon after the pop animation
+            setTimeout(() => {
+                balloon.parentElement.style.display = 'none';
+                numBalloonsPopped++;
+                checkAllBalloonsPopped();
+            }, 300);
         }
 
         // Sequentially pop all remaining balloons
@@ -168,18 +150,15 @@
             balloons.forEach((balloon, index) => {
                 if (balloon && balloon.element.style.display !== 'none') {
                     setTimeout(() => {
-                        balloon.element.firstChild.classList.add('pop'); // Add pop animation
+                        balloon.element.firstChild.classList.add('pop');
                         popSound.currentTime = 0;
-                        popSound.play(); // Play pop sound
-                      //  balloon.classList.add('popped');
+                        popSound.play();
                         setTimeout(() => balloon.element.style.display = 'none', 300);
                     }, delay);
 
-                    delay += 10; // Increase delay for the next balloon
-                    numBalloonsPopped++;
-                
+                    delay += 10;
                 }
-              });
+            });
         }
 
         // Balloon bouncing effect
@@ -209,12 +188,11 @@
 
         // Check if all balloons are popped
         function checkAllBalloonsPopped() {
-            const remainingBalloons = document.querySelectorAll('#balloons > div:not(.popped)');
-           if ((numBalloonsPopped === numBalloons)) {
+            if (numBalloonsPopped === numBalloons) {
                 document.getElementById('message').style.display = 'block';
                 document.querySelector('.hidden-message').style.display = 'block';
                 document.getElementById('image').style.display = 'block';
-           }
+            }
         }
     </script>
 </body>
