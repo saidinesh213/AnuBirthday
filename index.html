@@ -149,7 +149,7 @@
                 const balloon = e.target;
                 balloon.classList.add('pop'); // Add pop animation
                 popSound.play(); // Play pop sound
-
+balloon.classList.add('popped');
                 // Sequentially pop remaining balloons
                 setTimeout(() => popRemainingBalloons(), 300);
 
@@ -171,6 +171,7 @@
                         balloon.element.firstChild.classList.add('pop'); // Add pop animation
                         popSound.currentTime = 0;
                         popSound.play(); // Play pop sound
+                        balloon.classList.add('popped');
                         setTimeout(() => balloon.element.style.display = 'none', 300);
                     }, delay);
 
@@ -208,8 +209,8 @@
 
         // Check if all balloons are popped
         function checkAllBalloonsPopped() {
-            const remainingBalloons = document.querySelectorAll('#balloons > div:not([style*="display: none"])');
-           if ((numBalloonsPopped === numBalloons) && (balloon.element.style.display === 'none')) {
+            const remainingBalloons = document.querySelectorAll('#balloons > div:not(.popped)');
+           if ((numBalloonsPopped === numBalloons) && (remainingBalloons.length === 0)) {
                 document.getElementById('message').style.display = 'block';
                 document.querySelector('.hidden-message').style.display = 'block';
                 document.getElementById('image').style.display = 'block';
