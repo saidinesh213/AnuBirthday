@@ -62,6 +62,18 @@
             border-radius: 8px;
         }
 
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
         @keyframes popEffect {
             0% {
                 transform: scale(1);
@@ -97,7 +109,7 @@
         const balloonContainer = document.getElementById('balloons');
         const balloons = [];
         const popSound = document.getElementById('popSound');
-        let balloonsPopped = 0; // Count popped balloons
+        let popped = false; // To check if a balloon has been popped
 
         // Balloon creation
         for (let i = 0; i < numBalloons; i++) {
@@ -130,16 +142,39 @@
 
         // Balloon pop effect with sound
         function popBalloon(e) {
-            const balloon = e.target;
-            balloon.classList.add('pop'); // Add pop animation
-            popSound.play(); // Play pop sound
+            if (!popped) {
+                popped = true; // Ensure only one balloon click triggers the chain
+                const balloon = e.target;
+                balloon.classList.add('pop'); // Add pop animation
+                popSound.play(); // Play pop sound
 
-            // Remove the balloon after popping
-            setTimeout(() => {
-                balloon.parentElement.style.display = 'none';
-                balloonsPopped++;
-                checkAllBalloonsPopped(); // Check after each balloon is popped
-            }, 300);
+                // Sequentially pop remaining balloons
+                setTimeout(() => popRemainingBalloons(), 300);
+
+                // Check if all balloons are popped
+                setTimeout(() => {
+                    balloon.parentElement.style.display = 'none';
+                    checkAllBalloonsPopped();
+                }, 300);
+            }
+        }
+
+        // Sequentially pop all remaining balloons
+        function popRemainingBalloons() {
+            let delay = 0;
+
+            balloons.forEach((balloon, index) => {
+                if (balloon && balloon.element.style.display !== 'none') {
+                    setTimeout(() => {
+                        balloon.element.firstChild.classList.add('pop'); // Add pop animation
+                        popSound.currentTime = 0;
+                        popSound.play(); // Play pop sound
+                        setTimeout(() => balloon.element.style.display = 'none', 300);
+                    }, delay);
+
+                    delay += 20; // Increase delay for the next balloon
+                }
+            });
         }
 
         // Balloon bouncing effect
@@ -169,7 +204,8 @@
 
         // Check if all balloons are popped
         function checkAllBalloonsPopped() {
-            if (balloonsPopped === numBalloons) {
+            const remainingBalloons = document.querySelectorAll('#balloons > div:not([style*="display: none"])');
+            if (remainingBalloons.length == 0) {
                 document.getElementById('message').style.display = 'block';
                 document.querySelector('.hidden-message').style.display = 'block';
                 document.getElementById('image').style.display = 'block';
