@@ -174,9 +174,10 @@
                     }, delay);
 
                     delay += 20; // Increase delay for the next balloon
+                    numBalloonsPopped = numBalloonsPopped +1;
                 
                 }
-              numBalloonsPopped +=1; });
+              });
         }
 
         // Balloon bouncing effect
@@ -207,7 +208,7 @@
         // Check if all balloons are popped
         function checkAllBalloonsPopped() {
             const remainingBalloons = document.querySelectorAll('#balloons > div:not([style*="display: none"])');
-           if (numBalloonsPopped == numBalloons) {
+           if (numBalloonsPopped === numBalloons) {
                 document.getElementById('message').style.display = 'block';
                 document.querySelector('.hidden-message').style.display = 'block';
                 document.getElementById('image').style.display = 'block';
