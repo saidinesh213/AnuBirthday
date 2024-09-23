@@ -110,6 +110,7 @@
         const balloons = [];
         const popSound = document.getElementById('popSound');
         let popped = false; // To check if a balloon has been popped
+        const numBalloonsPopped = 1;
 
         // Balloon creation
         for (let i = 0; i < numBalloons; i++) {
@@ -173,6 +174,7 @@
                     }, delay);
 
                     delay += 20; // Increase delay for the next balloon
+                    numBalloonsPopped +=1;
                 }
             });
         }
@@ -205,11 +207,11 @@
         // Check if all balloons are popped
         function checkAllBalloonsPopped() {
             const remainingBalloons = document.querySelectorAll('#balloons > div:not([style*="display: none"])');
-         //   if (remainingBalloons.length == 0) {
+           if (numBalloonsPopped == numBalloons) {
                 document.getElementById('message').style.display = 'block';
                 document.querySelector('.hidden-message').style.display = 'block';
                 document.getElementById('image').style.display = 'block';
-          //  }
+           }
         }
     </script>
 </body>
