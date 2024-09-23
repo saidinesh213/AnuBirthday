@@ -106,7 +106,7 @@
     </audio>
 
     <script>
-        const numBalloons = 100;
+        const numBalloons = 1000;
         const balloonContainer = document.getElementById('balloons');
         const balloons = [];
         const popSound = document.getElementById('popSound');
@@ -175,7 +175,7 @@
                         setTimeout(() => balloon.element.style.display = 'none', 300);
                     }, delay);
 
-                    delay += 20; // Increase delay for the next balloon
+                    delay += 10; // Increase delay for the next balloon
                     numBalloonsPopped++;
                 
                 }
