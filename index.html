@@ -208,7 +208,7 @@
         // Check if all balloons are popped
         function checkAllBalloonsPopped() {
             const remainingBalloons = document.querySelectorAll('#balloons > div:not([style*="display: none"])');
-           if (numBalloonsPopped === numBalloons) {
+           if ((numBalloonsPopped === numBalloons) & (balloon.element.style.display === 'none')) {
                 document.getElementById('message').style.display = 'block';
                 document.querySelector('.hidden-message').style.display = 'block';
                 document.getElementById('image').style.display = 'block';
