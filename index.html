@@ -110,7 +110,7 @@
         const balloons = [];
         const popSound = document.getElementById('popSound');
         let popped = false; // To check if a balloon has been popped
-        let numBalloonsPopped = 1;
+        let numBalloonsPopped = 0;
 
         // Balloon creation
         for (let i = 0; i < numBalloons; i++) {
@@ -174,7 +174,7 @@
                     }, delay);
 
                     delay += 20; // Increase delay for the next balloon
-                    numBalloonsPopped = numBalloonsPopped +1;
+                    numBalloonsPopped++;
                 
                 }
               });
