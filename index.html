@@ -98,10 +98,9 @@
         const balloonContainer = document.getElementById('balloons');
         const balloons = [];
         const popSound = document.getElementById('popSound');
-        let popped = false; 
         let numBalloonsPopped = 0;
 
-        // Balloon creation to fill entire screen
+        // Balloon creation to fill the entire screen
         for (let i = 0; i < numBalloons; i++) {
             const balloonWrapper = document.createElement('div');
             balloonWrapper.style.position = 'absolute';
@@ -131,21 +130,19 @@
 
         // Balloon pop effect with heart-shaped pattern
         function popBalloon(e) {
-            if (!popped) {
-                popped = true;
-                const balloon = e.target;
-                balloon.classList.add('pop');
-                popSound.play();
+            const balloon = e.target;
+            balloon.classList.add('pop');
+            popSound.play();
 
-                // Pop remaining balloons in heart shape
-                setTimeout(() => popRemainingBalloonsHeart(), 300);
+            // Hide clicked balloon
+            setTimeout(() => {
+                balloon.parentElement.style.display = 'none';
+                numBalloonsPopped++;
+                checkAllBalloonsPopped();
+            }, 300);
 
-                // Hide clicked balloon
-                setTimeout(() => {
-                    balloon.parentElement.style.display = 'none';
-                    checkAllBalloonsPopped();
-                }, 300);
-            }
+            // Pop remaining balloons in heart shape
+            setTimeout(() => popRemainingBalloonsHeart(), 500);
         }
 
         // Heart-shaped pop pattern
@@ -160,8 +157,11 @@
                         balloon.element.firstChild.classList.add('pop');
                         popSound.currentTime = 0;
                         popSound.play();
-                        setTimeout(() => balloon.element.style.display = 'none', 300);
-                        numBalloonsPopped++;
+                        setTimeout(() => {
+                            balloon.element.style.display = 'none';
+                            numBalloonsPopped++;
+                            checkAllBalloonsPopped();
+                        }, 300);
                     }, delay);
                     delay += 20; 
                 }
@@ -207,7 +207,7 @@
 
         // Check if all balloons are popped
         function checkAllBalloonsPopped() {
-            if (numBalloonsPopped === numBalloons) {
+            if (numBalloonsPopped >= numBalloons) {
                 document.getElementById('message').style.display = 'block';
                 document.querySelector('.hidden-message').style.display = 'block';
                 document.getElementById('image').style.display = 'block';
