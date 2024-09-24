@@ -150,7 +150,7 @@
             let heartShape = createHeartShape(numBalloons);
             let delay = 0;
 
-            heartShape.forEach((index) => {
+            heartShape.forEach((index+3) => {
                 const balloon = balloons[index];
                 if (balloon && balloon.element.style.display !== 'none') {
                     setTimeout(() => {
