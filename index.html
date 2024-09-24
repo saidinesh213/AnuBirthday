@@ -150,7 +150,7 @@
             let heartShape = createHeartShape(numBalloons);
             let delay = 0;
 
-            heartShape.forEach((index+3) => {
+            heartShape.forEach((index) => {
                 const balloon = balloons[index];
                 if (balloon && balloon.element.style.display !== 'none') {
                     setTimeout(() => {
@@ -208,11 +208,9 @@
         // Check if all balloons are popped
         function checkAllBalloonsPopped() {
             if (numBalloonsPopped >= numBalloons) {
-             //   setTimeout(() => {
-                    document.getElementById('message').style.display = 'block';
-                    document.querySelector('.hidden-message').style.display = 'block';
-                    document.getElementById('image').style.display = 'block';
-               // }, 1000); // 1-second delay
+                document.getElementById('message').style.display = 'block';
+                document.querySelector('.hidden-message').style.display = 'block';
+                document.getElementById('image').style.display = 'block';
             }
         }
     </script>
