@@ -243,8 +243,8 @@
     function checkAllBalloonsPopped() {
         if (numBalloonsPopped >= numBalloons) {
             setTimeout(() => {
-                document.getElementById('message').style.display = 'block';
-                document.querySelector('.hidden-message').style.display = 'block';
+                document.getElementById('.card').style.display = 'block';
+                document.querySelector('.card').style.display = 'block';
                 document.getElementById('image').style.display = 'block';
             }, 2000);
         }
