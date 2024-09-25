@@ -111,8 +111,8 @@
     <div id="balloons"></div>
     
      <div class="card">
-        <h1 id="message">Happy Birthday 🎂 🎉 Sai Kumar 🎈!</h1>
-        <p>Another year older, but are you any wiser? 😜</p>
+        <h1 id="message">Happy Birthday 🎂 🎉 Anu🎈!</h1>
+     <!--    <p>Another year older, but are you any wiser? 😜</p> -->
         <p class="hidden-message">I wanted to take a moment to wish you a birthday that's as epic as your world tour and as adventurous as your quest for the perfect woman! 🌎💘</p>
         <p>As you embark on another journey around the sun, may your travels be filled with more incredible stories than Tinder could ever provide! Who knows, maybe this year you'll finally find "the one" on a remote island somewhere - just remember to bring me along as your wingman! 😉</p>
       <!-- <p>Here is a special gift for you <a href="https://www.amazon.in/g/8INTC14OI7S0U6V4?_encoding=UTF8&asin=B079YZG98M">ClickHere</a></p>-->
@@ -243,9 +243,8 @@
     function checkAllBalloonsPopped() {
         if (numBalloonsPopped >= numBalloons) {
             setTimeout(() => {
-                document.getElementById('.card').style.display = 'block';
-                document.querySelector('.card').style.display = 'block';
-                document.getElementById('image').style.display = 'block';
+                document.querySelector('.card').getElementById('message').style.display = 'block';
+                document.querySelector('.card').getElementById('image').style.display = 'block';
             }, 2000);
         }
     }
