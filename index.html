@@ -244,8 +244,10 @@
     function checkAllBalloonsPopped() {
         if (numBalloonsPopped >= numBalloons) {
             setTimeout(() => {
-                
-                document.getElementById('messages').style.display = 'block';  
+                 document.querySelector('.card').style.display = 'block';  // Show the card
+            document.getElementById('messages').style.display = 'block';  // Show the message
+            document.getElementById('image').style.display = 'block';  
+              //  document.getElementById('messages').style.display = 'block';  
             }, 200);
         }
     }
