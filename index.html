@@ -109,7 +109,7 @@
 </head>
 <body>
     <div id="balloons"></div>
-    
+     <h1 id="message">Happy Birthday 🎂 🎉 Anu🎈!</h1>
      <div class="card">
         <h1 id="message">Happy Birthday 🎂 🎉 Anu🎈!</h1>
      <!--    <p>Another year older, but are you any wiser? 😜</p> -->
@@ -243,6 +243,7 @@
     function checkAllBalloonsPopped() {
         if (numBalloonsPopped >= numBalloons) {
             setTimeout(() => {
+                 document.getElementById('message').style.display = 'block';
                 document.querySelector('.card').getElementById('message').style.display = 'block';
                 document.querySelector('.card').getElementById('image').style.display = 'block';
             }, 2000);
