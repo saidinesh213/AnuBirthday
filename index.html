@@ -24,11 +24,11 @@
 
         .balloon {
             position: absolute;
-            width: 100px;
+            width: 100px; /* Adjust size for smaller balloons to fit more on the screen */
             height: 130px;
             background-image: url('—Pngtree—red love balloon_4447810.png');
             background-size: cover;
-            cursor: url('—Pngtree—push pin icons and vectors_15756138.png'), auto;
+            cursor: url('https://cdn-icons-png.flaticon.com/512/7180/7180509.png'), auto;
             transition: transform 0.3s ease;
         }
 
@@ -37,7 +37,7 @@
         }
 
         .hidden-message {
-            display: none;
+            display: flex;
             font-size: 1.5rem;
             color: #333;
             text-align: center;
@@ -49,7 +49,7 @@
         }
 
         #image {
-            display: none;
+            display: flex;
             margin-top: 20px;
             border-radius: 10px;
         }
@@ -61,7 +61,6 @@
             background-color: rgba(255, 255, 255, 0.8);
             padding: 10px;
             border-radius: 8px;
-            text-align: center;
         }
 
         .pop {
@@ -81,59 +80,14 @@
                 opacity: 0;
             }
         }
-
-        .floating-balloon {
-            animation: floatUp 10s infinite ease-in-out;
-            opacity: 0.7;
-        }
-
-        @keyframes floatUp {
-            0% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-20px);
-            }
-            100% {
-                transform: translateY(0);
-            }
-        }
-
-        .card {
-            display: none;
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            padding: 20px;
-            text-align: center;
-            max-width: 80%;
-        }
-
-        .card h1 {
-            font-size: 2em;
-        }
-
-        .card p {
-            font-size: 1.2em;
-        }
-
-        .card img {
-            max-width: 100%;
-            height: auto;
-            border: 5px solid #f0f0f0;
-            border-radius: 10px;
-        }
     </style>
 </head>
 <body>
     <div id="balloons"></div>
-     <div class="card">
-        <h1 id="messages">Happy Birthday 🎂 🎉 Anu🎈!</h1>
-        <p class="hidden-message">I wanted to take a moment to wish you a birthday that's as epic as your world tour and as adventurous as your quest for the perfect woman! 🌎💘</p>
-        <p>As you embark on another journey around the sun, may your travels be filled with more incredible stories than Tinder could ever provide!</p>
-        <p>Enjoy your special day, and let's make sure to celebrate together soon😁😁</p>
-        <img id="image" src="bucki.jfif" alt="Wife's Picture" width="300px">
-    </div>
+    <h1 id="message">Happy Birthday, My Love!</h1>
+    <div class="hidden-message">Wishing you a day filled with love and happiness. You are the light of my life, and I cherish every moment with you.</div>
+    <img id="image" src="bucki.jfif" alt="Wife's Picture" width="300px">
+
     <!-- Sound for balloon pop -->
     <audio id="popSound">
         <source src="balloon-pop-48030.mp3" type="audio/mpeg">
@@ -174,51 +128,67 @@
         return colors[Math.floor(Math.random() * colors.length)];
     }
 
-    // Balloon pop effect
+    // Balloon pop effect with heart-shaped pattern
     function popBalloon(e) {
         const balloon = e.target;
         balloon.classList.add('pop');
         popSound.play();
 
+        // Hide clicked balloon
         setTimeout(() => {
             balloon.parentElement.style.display = 'none';
             numBalloonsPopped++;
             checkAllBalloonsPopped();
         }, 300);
+
+        // Pop remaining balloons in heart shape
+        setTimeout(() => popRemainingBalloonsHeart(), 500);
     }
 
-    // Floating balloon creation
-    function createFloatingBalloons() {
-        for (let i = 0; i < 10; i++) {
-            const floatingBalloon = document.createElement('div');
-            floatingBalloon.classList.add('balloon', 'floating-balloon');
-            floatingBalloon.style.top = `${Math.random() * 80}vh`;
-            floatingBalloon.style.left = `${Math.random() * 100}vw`;
-            floatingBalloon.style.backgroundImage = "url('https://image-url-for-balloon.png')"; // Replace with a lovely balloon image URL
-            balloonContainer.appendChild(floatingBalloon);
+    // Heart-shaped pop pattern
+    function popRemainingBalloonsHeart() {
+        let heartShape = createHeartShape(numBalloons);
+        let delay = 0;
+
+        heartShape.forEach((index) => {
+            const balloon = balloons[index];
+            if (balloon && balloon.element.style.display !== 'none') {
+                setTimeout(() => {
+                    balloon.element.classList.add('pop'); // Use element directly, not firstChild
+                    popSound.currentTime = 0;
+                    popSound.play();
+                    setTimeout(() => {
+                        balloon.element.style.display = 'none';
+                        numBalloonsPopped++;
+                        checkAllBalloonsPopped();
+                    }, 300);
+                }, delay);
+                delay += 20; 
+            }
+        });
+    }
+
+    // Create a heart-shaped pattern
+    function createHeartShape(numBalloons) {
+        let shapeIndices = [];
+        for (let i = 0; i < numBalloons; i++) {
+            let x = (i % 50) - 25;
+            let y = Math.abs(Math.floor(i / 50) - 1.2);
+            if (Math.pow(x / 25, 2) + Math.pow(y / 50, 2) <= 1) {
+                shapeIndices.push(i);
+            }
         }
+        return shapeIndices.sort(() => Math.random() - 0.5); // Shuffle for randomness
     }
 
-    // Check if all balloons are popped
-    function checkAllBalloonsPopped() {
-        if (numBalloonsPopped >= numBalloons) {
-            setTimeout(() => {
-                 document.querySelector('.card').style.display = 'block';
-                document.getElementById('messages').style.display = 'block';
-                document.getElementById('image').style.display = 'block';
-                createFloatingBalloons();  // Call to create floating balloons
-            }, 2000);
-        }
-    }
-
-    animateBalloons();
-
+    // Balloon bouncing effect
     function animateBalloons() {
         balloons.forEach(balloon => {
             const rect = balloon.element.getBoundingClientRect();
             let newX = rect.left + balloon.speedX;
             let newY = rect.top + balloon.speedY;
 
+            // Bounce off screen edges
             if (newX <= 0 || newX + rect.width >= window.innerWidth) {
                 balloon.speedX *= -1;
             }
@@ -232,7 +202,20 @@
 
         requestAnimationFrame(animateBalloons);
     }
-    </script>
+
+    animateBalloons();
+
+    // Check if all balloons are popped
+    function checkAllBalloonsPopped() {
+        if (numBalloonsPopped >= numBalloons) {
+            setTimeout(() => {
+                document.getElementById('message').style.display = 'block';
+                document.querySelector('.hidden-message').style.display = 'block';
+                document.getElementById('image').style.display = 'block';
+            }, 2000);
+        }
+    }
+</script>
 
 </body>
 </html>
